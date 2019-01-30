@@ -15,6 +15,10 @@
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
+	    <!-- 项目构建编码 -->
+	    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	    <!-- 项目输出编码 -->
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 	</properties>
 
@@ -27,7 +31,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -41,6 +45,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+	                <fork>true</fork>
+	            </configuration>
 			</plugin>
 		</plugins>
 	</build>

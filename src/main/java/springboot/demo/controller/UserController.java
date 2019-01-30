@@ -1,5 +1,9 @@
 package springboot.demo.controller;
 
+import javax.validation.Valid;
+
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,6 +43,16 @@ public class UserController {
     @RequestMapping("/get/{name}")
     public String getUserByName(@PathVariable String name) {
         return name;
+    }
+
+    @RequestMapping("/save")
+    public Boolean saveUser(@Valid User user, BindingResult result) {
+        if (result.hasErrors()) {
+            for (ObjectError error : result.getAllErrors()) {
+                System.out.println(error.getCode() + "-" + error.getDefaultMessage());
+            }
+        }
+        return true;
     }
 
 }

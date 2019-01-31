@@ -1,4 +1,4 @@
-package springboot.demo;
+package springboot.demo.config;
 
 import javax.servlet.Filter;
 
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import springboot.demo.web.filter.MyFilter;
 
 @Configuration
-public class WebConfiguration {
+public class WebConfig {
     
     @Bean
     public FilterRegistrationBean<Filter> testFilterRegistrationBean(){

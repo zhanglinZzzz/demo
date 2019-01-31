@@ -14,7 +14,7 @@ import springboot.demo.model.User;
 @RestController
 public class UserController {
 
-    @RequestMapping(name = "/getUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/getUser", method = RequestMethod.POST)
     public User getUser() {
         User user = new User();
         user.setName("张三");

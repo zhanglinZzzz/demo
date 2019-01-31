@@ -1,58 +1,39 @@
 package springboot.demo.controller;
 
-import javax.validation.Valid;
+import java.util.List;
 
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import springboot.demo.model.User;
+import springboot.demo.service.UserService;
 
 @RestController
+@RequestMapping("/userManage")
 public class UserController {
-
-    @RequestMapping(value = "/getUser", method = RequestMethod.POST)
-    public User getUser() {
-        User user = new User();
-        user.setName("张三");
-        user.setAge(18);
-        user.setPassword("11111111");
-        return user;
+    
+    @Autowired
+    private UserService userService;
+    
+    @RequestMapping("/addUser")
+    public User addUser(User user){
+        return userService.addUser(user);
     }
-
-    /**
-     * http://localhost:8080/getUserByName?name=zhangsan
-     * 
-     * @param user
-     * @return
-     */
-    @RequestMapping("/getUserByName")
-    public String getUserByName(User user) {
-        return user.getName();
+    
+    @RequestMapping("/updateUser")
+    public User updateUser(User user){
+        return userService.updateUser(user);
     }
-
-    /**
-     * http://localhost:8080/get/zhangsan
-     * 
-     * @param name
-     * @return
-     */
-    @RequestMapping("/get/{name}")
-    public String getUserByName(@PathVariable String name) {
-        return name;
+    
+    @RequestMapping("/deleteUserById")
+    public Boolean deleteUserById(Long id){
+        return userService.deleteUserById(id);
     }
-
-    @RequestMapping("/save")
-    public Boolean saveUser(@Valid User user, BindingResult result) {
-        if (result.hasErrors()) {
-            for (ObjectError error : result.getAllErrors()) {
-                System.out.println(error.getCode() + "-" + error.getDefaultMessage());
-            }
-        }
-        return true;
+    
+    @RequestMapping("/findUserList")
+    public List<User> findUserList(){
+        return userService.findUserList();
     }
-
+    
 }

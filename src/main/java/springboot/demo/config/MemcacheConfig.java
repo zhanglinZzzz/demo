@@ -30,6 +30,7 @@ public class MemcacheConfig {
             builder.setConnectionPoolSize(xMemcachedProperties.getPoolSize());
             builder.setOpTimeout(xMemcachedProperties.getOpTimeout());
             memcachedClient = builder.build();
+            memcachedClient.setEnableHeartBeat(false);
         } catch (IOException e) {
             logger.error("init MemcachedClient failed ",e);
         }

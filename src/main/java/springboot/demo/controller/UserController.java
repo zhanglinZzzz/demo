@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.pagehelper.PageInfo;
+
 import springboot.demo.model.User;
 import springboot.demo.service.UserService;
 
@@ -34,6 +36,11 @@ public class UserController {
     @RequestMapping("/findUserList")
     public List<User> findUserList(){
         return userService.findUserList();
+    }
+    
+    @RequestMapping("/findUserForPage")
+    public PageInfo<User> findUserListForPage(){
+        return userService.findUserListForPage();
     }
     
 }

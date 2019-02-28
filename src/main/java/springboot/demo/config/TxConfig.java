@@ -18,7 +18,7 @@ import org.springframework.transaction.interceptor.RuleBasedTransactionAttribute
 import org.springframework.transaction.interceptor.TransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
 
-@Component
+//@Component
 public class TxConfig {
     private static final int TX_METHOD_TIMEOUT = 5;
     private static final String AOP_POINTCUT_EXPRESSION = "execution (* springboot.demo..service.*Service.*(..))";

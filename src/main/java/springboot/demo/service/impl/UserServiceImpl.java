@@ -20,19 +20,19 @@ public class UserServiceImpl implements UserService{
     
     @Override
     public User addUser(User user) {
-        userMapper.addUser(user);
+        userMapper.insert(user);
         return user;
     }
 
     @Override
     public User updateUser(User user) {
-        userMapper.updateUser(user);
+        userMapper.updateByPrimaryKeySelective(user);
         return user;
     }
 
     @Override
     public Boolean deleteUserById(Long id) {
-        userMapper.deleteUserById(id);
+        userMapper.deleteByPrimaryKey(id);
         return true;
     }
 

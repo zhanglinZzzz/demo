@@ -29,12 +29,11 @@ import org.springframework.transaction.interceptor.TransactionInterceptor;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 
+import springboot.demo.constant.DataSourceConstant;
+
 @Configuration
 @MapperScan(basePackages = "springboot.demo.mapper1", sqlSessionTemplateRef = "primarySqlSessionTemplate")
 public class PrimaryDBConfig {
-
-    private static final int TX_METHOD_TIMEOUT = 5;
-    private static final String AOP_POINTCUT_EXPRESSION = "execution (* springboot.demo..service.*Service.*(..))";
 
     @Bean(name = "primaryDataSource")
     @Primary
@@ -73,29 +72,21 @@ public class PrimaryDBConfig {
             @Qualifier("primaryTransactionManager") DataSourceTransactionManager transactionManager) {
         NameMatchTransactionAttributeSource source = new NameMatchTransactionAttributeSource();
         /* 只读事务，不做更新操作 */
-        RuleBasedTransactionAttribute readOnlyTx = new RuleBasedTransactionAttribute();
-        readOnlyTx.setReadOnly(true);
-        readOnlyTx.setPropagationBehavior(TransactionDefinition.PROPAGATION_NOT_SUPPORTED);
+        RuleBasedTransactionAttribute supportsTx = new RuleBasedTransactionAttribute();
+        supportsTx.setReadOnly(true);
+        supportsTx.setPropagationBehavior(TransactionDefinition.PROPAGATION_NOT_SUPPORTED);
         /* 当前存在事务就使用当前事务，当前不存在事务就创建一个新的事务 */
         RuleBasedTransactionAttribute requiredTx = new RuleBasedTransactionAttribute();
         requiredTx.setRollbackRules(Collections.singletonList(new RollbackRuleAttribute(Exception.class)));
         requiredTx.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-        requiredTx.setTimeout(TX_METHOD_TIMEOUT);
+        requiredTx.setTimeout(DataSourceConstant.TX_METHOD_TIMEOUT);
         Map<String, TransactionAttribute> txMap = new HashMap<>();
-        txMap.put("add*", requiredTx);
-        txMap.put("insert*", requiredTx);
-        txMap.put("save*", requiredTx);
-        txMap.put("update*", requiredTx);
-        txMap.put("modify*", requiredTx);
-        txMap.put("edit*", requiredTx);
-        txMap.put("delete*", requiredTx);
-        txMap.put("remove*", requiredTx);
-        txMap.put("get*", readOnlyTx);
-        txMap.put("find*", readOnlyTx);
-        txMap.put("load*", readOnlyTx);
-        txMap.put("search*", readOnlyTx);
-        txMap.put("query*", readOnlyTx);
-        txMap.put("*", readOnlyTx);
+        for (String methodPerfix : DataSourceConstant.REQUIRED_TX_METHOD_PERFIX) {
+            txMap.put(methodPerfix, requiredTx);
+        }
+        for (String methodPerfix : DataSourceConstant.SUPPORTS_TX_METHOD_PERFIX) {
+            txMap.put(methodPerfix, supportsTx);
+        }
         source.setNameMap(txMap);
         TransactionInterceptor txAdvice = new TransactionInterceptor(transactionManager, source);
         return txAdvice;
@@ -105,7 +96,7 @@ public class PrimaryDBConfig {
     @Primary
     public Advisor txAdviceAdvisor(@Qualifier("primaryTxAdvice") TransactionInterceptor txAdvice) {
         AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
-        pointcut.setExpression(AOP_POINTCUT_EXPRESSION);
+        pointcut.setExpression(DataSourceConstant.AOP_POINTCUT_EXPRESSION);
         return new DefaultPointcutAdvisor(pointcut, txAdvice);
     }
 }

@@ -114,26 +114,9 @@
 	        <groupId>org.springframework.boot</groupId>  
 	        <artifactId>spring-boot-starter-log4j2</artifactId>  
 	    </dependency> 
-	    <!-- jta-atomikos 多数据源事务管理 -->
-	    <dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-jta-atomikos</artifactId>
-		</dependency>
 	</dependencies>
 
     <build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-			<resource>
-				<directory>src/main/java</directory>
-				<includes>
-				    <include>**/*.xml</include>
-				</includes>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

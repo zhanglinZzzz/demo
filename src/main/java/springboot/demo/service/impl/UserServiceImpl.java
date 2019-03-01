@@ -25,7 +25,6 @@ public class UserServiceImpl implements UserService{
     public User addUser(User user) {
         userPrimaryMapper.insert(user);
         userSecondaryMapper.insert(user);
-        int i = 1/0;
         return user;
     }
 
